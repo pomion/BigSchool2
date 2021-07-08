@@ -9,9 +9,11 @@ namespace BigSchool.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public System.Data.Entity.DbSet<BigSchool.Models.ApplicationUser> IdentityUsers { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Attendance> Followings { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -29,6 +31,17 @@ namespace BigSchool.Models
                 .HasRequired(a => a.Course)
                 .WithMany()
                 .WillCascadeOnDelete(false);
+
+            modekBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Followers)
+                .WithRequired(f => f.Followee)
+                .WillCascadeOnDelete(false);
+
+            modekBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Followees)
+                .WithRequired(f => f.Follower)
+                .WillCascadeOnDelete(false);
+
             base.OnModelCreating(modekBuilder);
         }
     }
