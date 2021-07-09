@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BigSchool.Models
 {
+//
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
